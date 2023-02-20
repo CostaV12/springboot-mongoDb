@@ -5,10 +5,7 @@ import com.example.springbootmongo.dto.UserDto;
 import com.example.springbootmongo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +25,14 @@ public class UserResource {
         List<User> users = new ArrayList<>(userService.userList());
         List<UserDto> usersDto = users.stream().map(UserDto::new).collect(Collectors.toList());
         return ResponseEntity.ok().body(usersDto);
-
     }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<UserDto> findById(@PathVariable String id) {
+
+        User user = userService.findById(id);
+
+        return ResponseEntity.ok().body(new UserDto(user));
+    }
+
 }
