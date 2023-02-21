@@ -3,6 +3,7 @@ package com.example.springbootmongo.resource;
 import com.example.springbootmongo.domain.Post;
 import com.example.springbootmongo.domain.User;
 import com.example.springbootmongo.dto.UserDto;
+import com.example.springbootmongo.resource.util.URL;
 import com.example.springbootmongo.service.PostService;
 import com.example.springbootmongo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,13 @@ public class PostResource {
         return ResponseEntity.ok().body(posts);
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Post> findById(@PathVariable String id) {
+    @GetMapping(value = "/titlesearch")
+    public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text) {
+        text = URL.decodeParam(text);
 
-        Post post = postService.findById(id);
+        List<Post> posts = postService.findByText(text);
 
-        return ResponseEntity.ok().body(post);
+        return ResponseEntity.ok().body(posts);
     }
 
 
